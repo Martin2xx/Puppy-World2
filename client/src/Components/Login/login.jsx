@@ -36,8 +36,8 @@ export default function Login({ setUser }) {
         const DBuser = response.data[0];
         setUser({ user_id: DBuser.user_id, user_name: DBuser.user_name });
 
-        localStorage.setItem("user", JSON.stringify(DBuser)); // Store user info
-        navigate("/dashboard"); // Redirect to Dashboard
+        localStorage.setItem("user", JSON.stringify(DBuser)); 
+        navigate("/dashboard"); 
       } else {
         setError("Invalid username or password.");
       }
