@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 
+
 export default function Signup() {
   const [formData, setFormData] = useState({
     user_name: "",
@@ -20,8 +21,7 @@ export default function Signup() {
     event.preventDefault();
     try {
       await axios.post("http://localhost:3002/users/", formData);
-      alert("Signup successful!");
-      navigate("/"); 
+      alert("Signup successful!"); 
     } catch (error) {
       console.error(error);
       alert("Signup failed!");

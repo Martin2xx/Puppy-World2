@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+  .navbar {
+    background-color: #dbeafe; 
+    padding: 10px;
+  }
+  
+  .navbar a {
+    color: #333;
+    text-decoration: none;
+    margin-right: 15px;
+    font-weight: bold;
+  }
+  
+  
+  
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  
+  button {
+    background-color: #60a5fa; 
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #2563eb; 
+  }
+  
+  
+  form input,
+  form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  
+  .question {
+    background-color: #e5e7eb; 
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .answer {
+    background-color: #f3f4f6; 
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  
+  .navbar-brand:focus, .navbar-brand:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  .navbar {
+    background-color: #f8f9fa !important; 
+  }
+  
+  .navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #007bff !important; 
+  }
+  

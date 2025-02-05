@@ -29,10 +29,17 @@ export default function Questions({ user }) {
       console.error("Error fetching answers:", error);
     }
   };
+  
 
   
   const handleSubmit = async (event, questionId) => {
     event.preventDefault();
+    
+    if (!answerBody.trim()) { // Prevent empty answers
+      alert("Answer cannot be empty.");
+      return;
+    }
+  
     try {
       await axios.post("http://localhost:3002/answers/", {
         question_id: questionId,

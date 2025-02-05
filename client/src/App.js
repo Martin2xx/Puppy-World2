@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import NavBarMenu from "./Components/NavBarMenu";
+import './styles.css';
+import NavBarMenu from "./Components/NavBarMenu/NavBarMenu";
 import Login from "./Components/Login/Login";
 import Signup from "./Components/Signup/SignUp";
 import Questions from "./Components/Questions/Questions";
