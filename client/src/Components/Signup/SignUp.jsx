@@ -15,17 +15,19 @@ export default function Signup() {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await axios.post("http://localhost:3002/users/", formData);
       alert("Signup successful!");
+      navigate("/"); 
     } catch (error) {
       console.error(error);
       alert("Signup failed!");
     }
   };
+  
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
