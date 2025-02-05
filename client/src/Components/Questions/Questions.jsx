@@ -35,7 +35,7 @@ export default function Questions({ user }) {
   const handleSubmit = async (event, questionId) => {
     event.preventDefault();
     
-    if (!answerBody.trim()) { // Prevent empty answers
+    if (!answerBody.trim()) { 
       alert("Answer cannot be empty.");
       return;
     }

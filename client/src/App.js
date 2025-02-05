@@ -9,7 +9,7 @@ import Questions from "./Components/Questions/Questions";
 function App() {
   return (
     <Router>
-      <NavBarMenu /> {/* Make sure the navbar is always visible */}
+      <NavBarMenu /> 
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
