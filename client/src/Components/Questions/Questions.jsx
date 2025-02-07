@@ -13,6 +13,7 @@ export default function Questions({ user }) {
     const fetchQuestions = async () => {
       try {
         const response = await axios.get("http://localhost:3002/questions/");
+        console.log(response);
         setQuestions(response.data);
       } catch (error) {
         console.error("Error fetching questions:", error);

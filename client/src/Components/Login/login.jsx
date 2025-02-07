@@ -25,11 +25,11 @@ export default function Login({ setUser }) {
     setError(""); 
   
     try {
-      const response = await axios.post("http://localhost:3002/login", formData);
-  
+      const response = await axios.post("http://localhost:3002/users", formData);
+  console.log(response);
       if (response.data.length > 0) {
         const DBuser = response.data[0];
-        setUser({ user_id: DBuser.user_id, user_name: DBuser.user_name });
+        setFormData({ user_id: DBuser.user_id, user_name: DBuser.user_name });
   
         localStorage.setItem("user", JSON.stringify(DBuser)); 
         navigate("/questions"); 

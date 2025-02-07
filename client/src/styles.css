@@ -19,7 +19,10 @@ body {
     font-weight: bold;
   }
   
-  
+  .MainHeader{
+    text-align: center;
+    color: #007bff;
+  }
   
   .container {
     max-width: 800px;
