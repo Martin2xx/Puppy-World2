@@ -1,21 +1,21 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import './styles.css';
+import { Routes, Route } from "react-router-dom";
 import NavBarMenu from "./Components/NavBarMenu/NavBarMenu";
+import Signup from "./Components/Signup/Signup"; 
 import Login from "./Components/Login/Login";
-import Signup from "./Components/Signup/SignUp";
 import Questions from "./Components/Questions/Questions";
+import "./styles.css";
 
 function App() {
   return (
-    <Router>
-      <NavBarMenu /> 
+    <>
+      <NavBarMenu />
       <Routes>
-        <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/questions" element={<Questions />} />
       </Routes>
-    </Router>
+    </>
   );
 }
 
