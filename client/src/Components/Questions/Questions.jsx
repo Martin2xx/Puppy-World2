@@ -64,38 +64,37 @@ export default function Questions({ user }) {
   
   const handleSubmitAnswer = async (event, questionId) => {
     event.preventDefault();
-
-    const answerBody = answerBodies[questionId];
-
+  
+    const answerBody = answerBodies[questionId]; 
+  
     if (!answerBody.trim()) {
       alert("Answer cannot be empty.");
       return;
     }
-
+  
     try {
-      await axios.get("http://localhost:3002/answers/add", {
-        params: {
-          question_id: questionId,
-          user_id: user?.user_id,
-          answer_body: answerBody,
-        },
+     
+      const response = await axios.post("http://localhost:3002/answers/add", {
+        question_id: questionId,
+        user_id: user?.user_id,
+        answer_body: answerBody,
       });
-
- 
+  
+     
       setAnswerBodies((prev) => ({
         ...prev,
         [questionId]: "", 
       }));
-
-      fetchAnswers(questionId); 
+  
+      
+      fetchAnswers(questionId);
     } catch (error) {
       console.error("Error submitting answer:", error);
     }
   };
-
   return (
     <div>
-      {/* Form to submit a new question */}
+     
       <div style={{ marginBottom: "20px", backgroundColor: "#f1f1f1", padding: "20px" }}>
         <h4>Ask a Question</h4>
         <Form onSubmit={handleSubmitQuestion}>
