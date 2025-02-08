@@ -5,7 +5,7 @@ import Signup from "./Components/Signup/Signup";
 import Login from "./Components/Login/Login";
 import Questions from "./Components/Questions/Questions";
 import Home from "./Components/Home/Home"; 
-import "./styles.css";
+
 
 function App() {
   return (

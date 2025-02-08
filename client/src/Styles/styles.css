@@ -86,4 +86,53 @@ body {
     font-size: 1.5rem;
     color: #007bff !important; 
   }
+
+  /* Container for the entire Q&A section */
+.qna-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+/* Styling for each question */
+.question-box {
+  background-color: #d8d6d6;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+/* Answer section */
+.answer-box {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+}
+
+/* Ask a question form */
+.ask-question-container {
+  background-color: #ffffff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+/* Input fields */
+.form-control {
+  margin-bottom: 10px;
+}
+
+/* Submit button */
+.submit-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
   

@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import "../../Styles/styles.css"
+
+
 
 export default function Questions({ user }) {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [newQuestionTitle, setNewQuestionTitle] = useState("");
   const [newQuestionBody, setNewQuestionBody] = useState("");
-  const [answerBodies, setAnswerBodies] = useState({}); 
+  const [answerBodies, setAnswerBodies] = useState({});
 
-  
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -23,17 +25,15 @@ export default function Questions({ user }) {
     fetchQuestions();
   }, []);
 
-
   const fetchAnswers = async (questionId) => {
     try {
-      const response = await axios.get(`http://localhost:3002/answers?question_id=${questionId}`);
+      const response = await axios.get(`http://localhost:3002/answers/fetch?question_id=${questionId}`);
       setAnswers((prev) => ({ ...prev, [questionId]: response.data }));
     } catch (error) {
       console.error("Error fetching answers:", error);
     }
   };
 
- 
   const handleSubmitQuestion = async (event) => {
     event.preventDefault();
 
@@ -43,15 +43,12 @@ export default function Questions({ user }) {
     }
 
     try {
-      const response = await axios.get("http://localhost:3002/questions/", {
-        params: {
-          title: newQuestionTitle,
-          body: newQuestionBody,
-          user_id: user?.user_id, 
-        },
+      const response = await axios.post("http://localhost:3002/questions/", {
+        title: newQuestionTitle,
+        body: newQuestionBody,
+        user_id: user?.user_id,
       });
 
-    
       setNewQuestionTitle("");
       setNewQuestionBody("");
 
@@ -61,41 +58,37 @@ export default function Questions({ user }) {
     }
   };
 
-  
   const handleSubmitAnswer = async (event, questionId) => {
     event.preventDefault();
-  
-    const answerBody = answerBodies[questionId]; 
-  
-    if (!answerBody.trim()) {
+
+    const answerBody = answerBodies[questionId];
+
+    if (!answerBody?.trim()) {
       alert("Answer cannot be empty.");
       return;
     }
-  
+
     try {
-     
-      const response = await axios.post("http://localhost:3002/answers/add", {
+      await axios.post("http://localhost:3002/answers/add", {
         question_id: questionId,
         user_id: user?.user_id,
         answer_body: answerBody,
       });
-  
-     
+
       setAnswerBodies((prev) => ({
         ...prev,
-        [questionId]: "", 
+        [questionId]: "",
       }));
-  
-      
+
       fetchAnswers(questionId);
     } catch (error) {
       console.error("Error submitting answer:", error);
     }
   };
+
   return (
     <div>
-     
-      <div style={{ marginBottom: "20px", backgroundColor: "#f1f1f1", padding: "20px" }}>
+      <div className="ask-question-container">
         <h4>Ask a Question</h4>
         <Form onSubmit={handleSubmitQuestion}>
           <Form.Group controlId="formQuestionTitle">
@@ -123,43 +116,21 @@ export default function Questions({ user }) {
         </Form>
       </div>
 
-    
       {questions.map((question) => (
-        <div key={question.question_id} style={{ backgroundColor: "#d8d6d6", padding: "20px", marginBottom: "10px" }}>
+        <div key={question.question_id} className="question-container">
           <strong>Question:</strong> {question.title}
-
-          <Button variant="link" onClick={() => fetchAnswers(question.question_id)}>
-            Show Answers
-          </Button>
-
+          <Button variant="link" onClick={() => fetchAnswers(question.question_id)}>Show Answers</Button>
           <div>
             <h4>Previous Answers</h4>
-            {answers[question.question_id]?.length > 0 ? (
+            {Array.isArray(answers[question.question_id]) && answers[question.question_id].length > 0 ? (
               answers[question.question_id].map((answer, index) => (
-                <div key={index} style={{ backgroundColor: "#f9f9f9", padding: "10px", marginTop: "5px" }}>
+                <div key={index} className="answer-container">
                   {answer.answer_body}
                 </div>
               ))
             ) : (
               <p>No answers yet.</p>
             )}
-          </div>
-
-   
-          <div style={{ backgroundColor: "#ffffff", padding: "20px", marginTop: "10px" }}>
-            <h4>Leave a Reply</h4>
-            <Form.Control
-              type="text"
-              placeholder="Your Answer"
-              value={answerBodies[question.question_id] || ""}
-              onChange={(e) => setAnswerBodies((prev) => ({
-                ...prev,
-                [question.question_id]: e.target.value,
-              }))}
-            />
-            <Button variant="warning" onClick={(event) => handleSubmitAnswer(event, question.question_id)}>
-              Submit Answer
-            </Button>
           </div>
         </div>
       ))}
