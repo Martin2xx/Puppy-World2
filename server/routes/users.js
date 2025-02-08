@@ -1,29 +1,50 @@
-import express from 'express'
-import db from '../dbconnection.js'
 
-const Router = express.Router()
+import express from 'express';
+import db from '../dbconnection.js';
 
-Router.get ("/", (req, res)=> {
-  const {user_name, user_password} = req.query 
-  db.query ("SELECT * FROM users WHERE user_name= ? AND user_password = ?", [user_name, user_password],  (err,result)=> {
+const router = express.Router();
+
+
+router.post("/", (req, res) => {
+  const { user_name, user_password } = req.body;
+  if (!user_name || !user_password) {
+    return res.status(400).send("Missing required fields");
+  }
+
+  const query = "INSERT INTO Users (user_name, user_password) VALUES (?, ?)";
+  db.query(query, [user_name, user_password], (err, result) => {
     if (err) {
-      console.log ("Error in fetching user", err)
-      res.status(500).send("error in the Query")
-    }   
-    else
-      res.send (result)
-  })
-})
-
-
-Router.post('/', (req, res) => {
-  const { user_name, user_password } = req.body; // Get data from body
-  db.query("INSERT INTO users (user_name, user_password) VALUES (?, ?)",[user_name, user_password],
-           (err, result) => {
-      if (err) res.status(500).send('Error adding student');
-      else res.status(201).send('Student added successfully');
+      console.error("Error inserting user:", err);
+      return res.status(500).send("Error inserting user");
     }
-  );
+    const newUser = {
+      user_id: result.insertId,
+      user_name,
+    };
+    res.status(201).json(newUser);
+  });
 });
 
-export default Router;
+
+router.post("/login", (req, res) => {
+  const { user_name, user_password } = req.body;
+  if (!user_name || !user_password) {
+    return res.status(400).send("Missing username or password.");
+  }
+
+  const query = "SELECT * FROM Users WHERE user_name = ? AND user_password = ?";
+  db.query(query, [user_name, user_password], (err, result) => {
+    if (err) {
+      console.error("Error logging in:", err);
+      return res.status(500).send("Error logging in.");
+    }
+
+    if (result.length > 0) {
+      return res.json(result);  
+    } else {
+      return res.status(401).send("Invalid credentials");
+    }
+  });
+});
+
+export default router;

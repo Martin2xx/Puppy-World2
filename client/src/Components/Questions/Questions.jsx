@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import "../../Styles/styles.css"
-
-
+import "../../Styles/styles.css";
 
 export default function Questions({ user }) {
   const [questions, setQuestions] = useState([]);
@@ -38,57 +36,66 @@ export default function Questions({ user }) {
 
   const handleSubmitQuestion = async (event) => {
     event.preventDefault();
-  
+
     if (!newQuestionTitle.trim() || !newQuestionBody.trim()) {
       alert("Both title and body are required.");
       return;
     }
-  
+
     try {
       const response = await axios.post("http://localhost:3002/questions", {
         title: newQuestionTitle,
         body: newQuestionBody,
-        user_id: user?.user_id, 
+        user_id: user?.user_id,
       });
-  
+
       setNewQuestionTitle("");
       setNewQuestionBody("");
-  
+
       setQuestions((prevQuestions) => [response.data, ...prevQuestions]);
     } catch (error) {
       console.error("Error submitting question:", error);
     }
   };
-  
+
   const handleSubmitAnswer = async (event, questionId) => {
     event.preventDefault();
-  
+
     const answerBody = answerBodies[questionId];
-  
+
     if (!answerBody.trim()) {
       alert("Answer cannot be empty.");
       return;
     }
-  
+
     try {
-      await axios.post("http://localhost:3002/answers/add", {
+      // Submit the answer
+      const response = await axios.post("http://localhost:3002/answers/add", {
         question_id: questionId,
         user_id: user?.user_id,
         answer_body: answerBody,
       });
-  
+
+    
       setAnswerBodies((prev) => ({
         ...prev,
         [questionId]: "",
       }));
-  
-     
-      fetchAnswers(questionId);
+
+      
+      setAnswers((prevAnswers) => {
+        const updatedAnswers = prevAnswers[questionId]
+          ? [...prevAnswers[questionId], response.data]
+          : [response.data];
+        return {
+          ...prevAnswers,
+          [questionId]: updatedAnswers,
+        };
+      });
     } catch (error) {
       console.error("Error submitting answer:", error);
     }
   };
-  
 
   return (
     <div>
@@ -123,7 +130,9 @@ export default function Questions({ user }) {
       {questions.map((question) => (
         <div key={question.question_id} className="question-container">
           <strong>Question:</strong> {question.title}
-          <Button variant="link" onClick={() => fetchAnswers(question.question_id)}>Show Answers</Button>
+          <Button variant="link" onClick={() => fetchAnswers(question.question_id)}>
+            Show Answers
+          </Button>
           <div>
             <h4>Previous Answers</h4>
             {Array.isArray(answers[question.question_id]) && answers[question.question_id].length > 0 ? (
@@ -136,6 +145,24 @@ export default function Questions({ user }) {
               <p>No answers yet.</p>
             )}
           </div>
+
+          <Form onSubmit={(e) => handleSubmitAnswer(e, question.question_id)}>
+            <Form.Group controlId={`answerBody-${question.question_id}`}>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                placeholder="Type your answer here"
+                value={answerBodies[question.question_id] || ""}
+                onChange={(e) => setAnswerBodies((prev) => ({
+                  ...prev,
+                  [question.question_id]: e.target.value,
+                }))}
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Submit Answer
+            </Button>
+          </Form>
         </div>
       ))}
     </div>

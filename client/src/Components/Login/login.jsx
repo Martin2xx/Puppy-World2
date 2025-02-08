@@ -1,3 +1,4 @@
+// src/Components/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -23,16 +24,16 @@ export default function Login({ setUser }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(""); 
-  
+
     try {
-      const response = await axios.post("http://localhost:3002/users", formData);
-  console.log(response);
+      const response = await axios.post("http://localhost:3002/users/login", formData);
+
       if (response.data.length > 0) {
         const DBuser = response.data[0];
         setFormData({ user_id: DBuser.user_id, user_name: DBuser.user_name });
-  
-        localStorage.setItem("user", JSON.stringify(DBuser)); 
-        navigate("/questions"); 
+
+        localStorage.setItem("user", JSON.stringify(DBuser));
+        navigate("/questions");
       } else {
         setError("Invalid username or password.");
       }

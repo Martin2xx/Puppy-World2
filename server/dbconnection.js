@@ -13,7 +13,7 @@ dataBase.connect ((err)=> {
     console.log ("Error on DB connect:", err)
     return;
   }
-  console.log ("Connected to School DB")
+  console.log ("Connected to Puppy-World DB")
 })
 
 export default dataBase;
