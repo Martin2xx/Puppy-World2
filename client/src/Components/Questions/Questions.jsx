@@ -27,7 +27,9 @@ export default function Questions({ user }) {
 
   const fetchAnswers = async (questionId) => {
     try {
-      const response = await axios.get(`http://localhost:3002/answers/fetch?question_id=${questionId}`);
+      const response = await axios.get(
+        `http://localhost:3002/answers/fetch?question_id=${questionId}`
+      );
       setAnswers((prev) => ({ ...prev, [questionId]: response.data }));
     } catch (error) {
       console.error("Error fetching answers:", error);
@@ -36,55 +38,57 @@ export default function Questions({ user }) {
 
   const handleSubmitQuestion = async (event) => {
     event.preventDefault();
-
+  
     if (!newQuestionTitle.trim() || !newQuestionBody.trim()) {
       alert("Both title and body are required.");
       return;
     }
-
+  
     try {
-      const response = await axios.post("http://localhost:3002/questions/", {
+      const response = await axios.post("http://localhost:3002/questions", {
         title: newQuestionTitle,
         body: newQuestionBody,
-        user_id: user?.user_id,
+        user_id: user?.user_id, 
       });
-
+  
       setNewQuestionTitle("");
       setNewQuestionBody("");
-
+  
       setQuestions((prevQuestions) => [response.data, ...prevQuestions]);
     } catch (error) {
       console.error("Error submitting question:", error);
     }
   };
-
+  
   const handleSubmitAnswer = async (event, questionId) => {
     event.preventDefault();
-
+  
     const answerBody = answerBodies[questionId];
-
-    if (!answerBody?.trim()) {
+  
+    if (!answerBody.trim()) {
       alert("Answer cannot be empty.");
       return;
     }
-
+  
     try {
       await axios.post("http://localhost:3002/answers/add", {
         question_id: questionId,
         user_id: user?.user_id,
         answer_body: answerBody,
       });
-
+  
       setAnswerBodies((prev) => ({
         ...prev,
         [questionId]: "",
       }));
-
+  
+     
       fetchAnswers(questionId);
     } catch (error) {
       console.error("Error submitting answer:", error);
     }
   };
+  
 
   return (
     <div>
