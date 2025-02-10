@@ -3,7 +3,6 @@ import db from "../dbconnection.js";
 
 const router = express.Router();
 
-
 router.get("/", (req, res) => {
   const query = "SELECT * FROM Questions";
   db.query(query, (err, result) => {
@@ -15,13 +14,12 @@ router.get("/", (req, res) => {
   });
 });
 
-
 router.post("/", (req, res) => {
-  console.log("Received request body:", req.body); 
+  console.log("Received request body:", req.body);
   const { title, body, user_id } = req.body;
 
   if (!title || !body || !user_id) {
-    console.log("Missing required fields:", { title, body, user_id }); 
+    console.log("Missing required fields:", { title, body, user_id });
     return res.status(400).json({ error: "Missing required fields" });
   }
 

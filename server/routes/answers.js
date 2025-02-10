@@ -1,8 +1,7 @@
-import express from 'express';
-import db from '../dbconnection.js';
+import express from "express";
+import db from "../dbconnection.js";
 
 const router = express.Router();
-
 
 router.get("/fetch", (req, res) => {
   const { question_id } = req.query;
@@ -22,11 +21,11 @@ router.get("/fetch", (req, res) => {
 });
 
 router.post("/add", (req, res) => {
-  console.log("Received request body:", req.body); 
+  console.log("Received request body:", req.body);
   const { question_id, user_id, answer_body } = req.body;
 
   if (!question_id || !user_id || !answer_body) {
-    console.log("Missing required fields:", { question_id, user_id, answer_body }); 
+    console.log("Missing required fields:", { question_id, user_id, answer_body });
     return res.status(400).json({ error: "Missing required fields" });
   }
 

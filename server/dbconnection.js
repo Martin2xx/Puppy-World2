@@ -1,11 +1,12 @@
 import mysql from 'mysql2'
 
-const dataBase = mysql.createConnection ( {
+const dataBase = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '2155631Mr!',
-  database: 'puppyworld'
-})
+  database: 'puppyworld',
+  socketPath: '/tmp/mysql.sock', });
+
 
 
 dataBase.connect ((err)=> {

@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../../Styles/styles.css";
 
-export default function Questions({ user }) {
+export default function Questions({ user, setUser }) {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [newQuestionTitle, setNewQuestionTitle] = useState("");
@@ -69,7 +69,8 @@ export default function Questions({ user }) {
     }
 
     try {
-      // Submit the answer
+      
+      console.log ("______", questionId, user.user_id, answerBody)
       const response = await axios.post("http://localhost:3002/answers/add", {
         question_id: questionId,
         user_id: user?.user_id,

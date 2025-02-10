@@ -1,50 +1,45 @@
-
 import express from 'express';
-import db from '../dbconnection.js';
+import mysql from 'mysql2';
 
 const router = express.Router();
 
 
-router.post("/", (req, res) => {
-  const { user_name, user_password } = req.body;
-  if (!user_name || !user_password) {
-    return res.status(400).send("Missing required fields");
-  }
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root', 
+  password: 'your-password', 
+  database: 'Puppy-World', 
+});
 
-  const query = "INSERT INTO Users (user_name, user_password) VALUES (?, ?)";
-  db.query(query, [user_name, user_password], (err, result) => {
-    if (err) {
-      console.error("Error inserting user:", err);
-      return res.status(500).send("Error inserting user");
-    }
-    const newUser = {
-      user_id: result.insertId,
-      user_name,
-    };
-    res.status(201).json(newUser);
-  });
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to the database:', err);
+    return;
+  }
+  console.log('Connected to Puppy-World DB');
 });
 
 
-router.post("/login", (req, res) => {
-  const { user_name, user_password } = req.body;
-  if (!user_name || !user_password) {
-    return res.status(400).send("Missing username or password.");
-  }
+router.post('/login', (req, res) => {
+  const { username, password } = req.body;
 
-  const query = "SELECT * FROM Users WHERE user_name = ? AND user_password = ?";
-  db.query(query, [user_name, user_password], (err, result) => {
-    if (err) {
-      console.error("Error logging in:", err);
-      return res.status(500).send("Error logging in.");
-    }
+  
+  db.query(
+    'SELECT * FROM users WHERE username = ? AND password = ?',
+    [username, password],
+    (err, results) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        return res.status(500).send({ message: 'Database error' });
+      }
 
-    if (result.length > 0) {
-      return res.json(result);  
-    } else {
-      return res.status(401).send("Invalid credentials");
+      if (results.length > 0) {
+        res.status(200).send({ message: 'Login successful', user: results[0] });
+      } else {
+        res.status(401).send({ message: 'Invalid credentials' });
+      }
     }
-  });
+  );
 });
 
 export default router;
