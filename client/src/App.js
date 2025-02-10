@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import NavBarMenu from "./Components/NavBarMenu/NavBarMenu";
-import Signup from "./Components/Signup/SignUp.jsx"; 
-import Questions from "./Components/Questions/Questions.jsx";
+import Signup from './Components/Signup/Signup.jsx';  // Use "Signup" instead of "SignUp"
+ import Questions from "./Components/Questions/Questions.jsx";
 import Home from "./Components/Home/Home.jsx"; 
 import { useState } from "react";
 import Login from './Components/Login/Login.jsx'
